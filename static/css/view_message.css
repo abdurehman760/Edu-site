@@ -1,0 +1,27 @@
+/* Unique class for message viewing page */
+.message-view {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.message-details {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style specific elements as needed */
+.message-details strong {
+    color: #333;
+    font-weight: bold;
+}
+
+.message-details span {
+    color: #0068ff;
+}

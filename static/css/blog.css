@@ -1,0 +1,237 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+    font-family: "Quicksand", sans-serif;
+    display: grid;
+}
+
+.container {
+  
+  max-width: 1200px;
+  margin: 2rem auto;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: 350px;
+  box-shadow: 0 0.1rem 1rem rgba(0, 0, 0, 0.1);
+  border-radius: 1em;
+  height: 550px;
+  background-color: #c7f2ff;
+}
+.card__body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.card__header img {
+  width: 100%; 
+  height: 220px;
+  object-fit: cover;
+}
+
+
+
+
+
+
+
+
+.post-meta {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.tag {
+  align-self: flex-start;
+    padding: 0.7em 1.2em;
+    border-radius: 1em;
+    font-size: 11px;
+    font-weight: bolder;
+    text-transform: uppercase;
+}
+
+.tag + .tag {
+  margin-left: .5em;
+}
+
+.tag-blue {
+  background: #56CCF2;
+background: linear-gradient(to bottom, #2F80ED, #56CCF2);
+  color: #fafafa;
+}
+
+.tag-brown {
+  background: #D1913C;
+background: linear-gradient(to bottom, #FFD194, #D1913C);
+  color: #fafafa;
+}
+
+.tag-red {
+  background: #cb2d3e;
+background: linear-gradient(to bottom, #ef473a, #cb2d3e);
+color: #fafafa;
+
+}
+
+.tag-orange {
+  background: #e67e22;
+  background: linear-gradient(to bottom, #e67e22, #d35400);
+  color: #fff;
+}
+
+.tag-purple {
+  background: #8e44ad;
+  background: linear-gradient(to bottom, #8e44ad, #6c3483);
+  color: #fff;
+}
+
+.tag-pink {
+  background: #e74c3c;
+  background: linear-gradient(to bottom, #e74c3c, #c0392b);
+  color: #fff;
+}
+
+.tag-yellow {
+  background: #f39c12;
+  background: linear-gradient(to bottom, #f39c12, #d35400);
+  color: #fff;
+}
+
+.tag-teal {
+  background: #008080;
+  background: linear-gradient(to bottom, #008080, #004d4d);
+  color: #fff;
+}
+
+.tag-lime {
+  background: #00ff00;
+  background: linear-gradient(to bottom, #00ff00, #00cc00);
+  color: #000;
+}
+.tag-green {
+  background: #0ca30c;
+  background: linear-gradient(to bottom, #03aa03, #007a00);
+  color: #ffffff;
+  
+}
+
+.tag-custom {
+  background: #ff0000;
+  background: linear-gradient(to bottom, #ff0000, #cc0000);
+  color: #fff;
+}
+
+.tag-default {
+  /* Define styles for unknown categories here */
+  color: #000;
+}
+
+.read-more-btn {
+  text-decoration: none;
+  color: #3498db;
+  font-weight: bold;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+
+.card__body h4 {
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  text-align: center;
+  overflow: hidden; /* Limit the display to 20 characters */
+  white-space: nowrap;
+  text-overflow: ellipsis; /* Add ellipsis if content overflows */
+}
+.card p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+
+.card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin-top: auto;
+  background-color: #f8d5e5; /* Light pink color for the footer */
+}
+
+
+
+.read-more-container {
+  text-align: right; /* Align the container to the right */
+}
+
+.read-more-btn img {
+  width: 100px; /* Adjust the width of the image */
+  height: auto; /* Maintain the aspect ratio */
+}
+
+.comments {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Move the container to the right */
+  margin-top: 10px; /* Adjust the margin as needed */
+}
+
+.comments .comment-count {
+  font-size: 14px; /* Adjust the font size of the comment count */
+  color: #555; /* Adjust the text color */
+  margin-right: 5px; /* Adjust the margin between the text and image */
+}
+
+.comments img {
+  width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.user__info .posted_at {
+  text-align: center;
+  color: #666; /* Adjust the color to your preference */
+  font-size: 14px; /* Adjust the font size to your preference */
+  margin-top: 5px; /* Adjust the margin-top to your preference */
+}
+
+
+.user {
+  display: flex;
+  gap: .5rem;
+}
+.keywords {
+  color: #0003ff;
+  font-size: 16px;
+  margin-right: 5px;
+  
+}
+
+.hashtag {
+  color: red;
+  font: 10px;
+}
+
+.user__image {
+    border-radius: 50%;
+    width: 40px; /* Adjust the width to your preference */
+    height: 40px; /* Adjust the height to your preference */
+  }
+  
+.user__info > small {
+  color: #666;
+}

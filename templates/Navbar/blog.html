@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blog Page</title>
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/blog.css') }}">
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <div class="navbar-header">
+                <!-- Logo -->
+                <div class="navbar-brand">
+                    <a class="logo" href="{{ url_for('index') }}">
+                        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+                    </a>
+                </div>
+                <!-- /Logo -->
+                <!-- Mobile toggle -->
+                <button class="navbar-toggle">
+                    <span></span>
+                </button>
+                <!-- /Mobile toggle -->
+            </div>
+            <!-- Navigation -->
+            <nav id="nav">
+                <ul class="main-menu nav navbar-nav navbar-right">
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                    <li><a href="{{ url_for('course') }}">Courses</a></li>
+                    <li><a href="{{ url_for('blog') }}">Blog</a></li>
+                    <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                    {% if 'user_id' in session %}
+                    {% if session['role'] in ['teacher', 'admin'] %}
+    <li><a href="{{ url_for('teacher_dashboard') }}">Teacher Dashboard</a></li>
+{% endif %}
+
+                    <li><a href="{{ url_for('logout') }}">Logout ({{ session['username'] }})</a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    {% endif %}
+                    <li><a href="#" id="darkModeToggle" onclick="toggleDarkMode();"> Dark mode</a></li>
+
+                </ul>
+            </nav>
+
+            <script>
+                function toggleDarkMode() {
+                    var element = document.body;
+                    element.classList.toggle("dark-mode");
+
+                    // Get the link element by its id
+                    var darkModeToggle = document.getElementById("darkModeToggle");
+
+                    // Toggle the link text based on the body class
+                    if (element.classList.contains("dark-mode")) {
+                        darkModeToggle.textContent = "Light mode";
+                    } else {
+                        darkModeToggle.textContent = "Dark mode";
+                    }
+                }
+
+            </script>
+
+
+        </div>
+    </header>
+    <!-- /Header -->
+
+    <!-- Hero-area -->
+    <div class="hero-area section">
+        <!-- Background Image -->
+        <div class="bg-image bg-parallax overlay" style="background-image: url('static/img/page-background.jpg');">
+        </div>
+        <!-- /Background Image -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1 text-center">
+                    <ul class="hero-area-tree">
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                        <li>Blog</li>
+                    </ul>
+                    <h1 class="white-text">Blog Page</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Hero-area -->
+
+    <!-- Main blog content -->
+    <div class="container">
+        <div class="row">
+            {% for post in blog_posts %}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card__header">
+                        <img src="{{ url_for('static', filename='upload_thumbnail/' + post.thumbnail_filename) }}"
+                            alt="card__image" class="card__image" width="600">
+                    </div>
+                    <div class="card__body">
+                        <div class="post-meta">
+                            {% if post.blog_category %}
+                            <span class="tag {{ category_classes.get(post.blog_category, 'tag-default') }}">{{
+                                post.blog_category }}</span>
+                            {% endif %}
+                            {% if post.keywords %}
+                            <span class="keywords">
+                                {% set keyword_list = post.keywords.split(',') %}
+                                {% for keyword in keyword_list[:3] %}
+                                <span class="hashtag">#</span>{{ keyword.strip()|capitalize }}
+                                {% endfor %}
+                            </span>
+                            {% endif %}
+                        </div>
+                        
+                        
+                            <h4>{{ post.title[:20] }}{{ '...' if post.title|length > 20 }}</h4>
+                            <p>{{ post.content[:100] }}...</p>
+                          
+                        <div class="comments">
+                            <span class="comment-count">({{ post.total_comments }})</span>
+  
+                            <img src="{{ url_for('static', filename='img/comment.png') }}" alt="comment-icon">
+                        </div>
+                        <div class="read-more-container">
+                            <a href="{{ url_for('blog_post', post_id=post.id) }}" class="read-more-btn">
+                                <img src="{{ url_for('static', filename='img/readmore.png') }}" alt="Read More">
+                            </a>
+                        </div>
+
+                    </div>
+                    
+
+                    <div class="card__footer">
+                        <div class="user">
+                            <img src="{{ url_for('static', filename='img/default_user_image.jpg') }}" alt="user__image"
+                                class="user__image">
+                            <div class="user__info">
+                                <h5>{{ post.author }}</h5>
+
+                                <small class="posted_at">{{ post.posted_at.strftime('%b %d, %Y - %I:%M%p') }}</small>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <!-- /row -->
+
+    <!-- row -->
+    <div class="row">
+        <!-- pagination -->
+        <div class="col-md-12">
+            <div class="post-pagination">
+                {% if blog_posts.has_prev %}
+                <a href="{{ url_for('blog', page=blog_posts.prev_num) }}" class="pagination-back pull-left">Back</a>
+                {% endif %}
+
+                <ul class="pages">
+                    {% for num in blog_posts.iter_pages() %}
+                    {% if num %}
+                    {% if num == blog_posts.page %}
+                    <li class="active">{{ num }}</li>
+                    {% else %}
+                    <li><a href="{{ url_for('blog', page=num) }}">{{ num }}</a></li>
+                    {% endif %}
+                    {% else %}
+                    <li><span class="ellipsis">...</span></li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+
+                {% if blog_posts.has_next %}
+                <a href="{{ url_for('blog', page=blog_posts.next_num) }}" class="pagination-next pull-right">Next</a>
+                {% endif %}
+            </div>
+        </div>
+        <!-- /pagination -->
+
+    </div>
+    <!-- /row -->
+    </div>
+    <!-- /main blog -->
+
+    <!-- aside blog -->
+    <div id="aside" class="col-md-3">
+        <!-- Widgets can be added here, such as recent posts and categories -->
+    </div>
+    <!-- /aside blog -->
+
+    </div>
+    <!-- /row -->
+
+    </div>
+    <!-- /container -->
+
+    </div>
+    <!-- /Blog -->
+
+    <!-- Footer -->
+    <footer id="footer" class="section">
+
+        <!-- container -->
+        <div class="container">
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- footer logo -->
+                <div class="col-md-6">
+                    <div class="footer-logo">
+                        <a class="logo" href="{{ url_for('index') }}">
+                            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+                        </a>
+
+                    </div>
+                </div>
+                <!-- footer logo -->
+
+                <!-- footer nav -->
+                <div class="col-md-6">
+                    <ul class="footer-nav">
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                        <li><a href="{{ url_for('about') }}">About</a></li>
+                        <li><a href="{{ url_for('course') }}">Courses</a></li>
+                        <li><a href="{{ url_for('blog') }}">Blog</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+
+                    </ul>
+                </div>
+                <!-- /footer nav -->
+
+            </div>
+            <!-- /row -->
+
+            <!-- row -->
+            <div id="bottom-footer" class="row">
+
+                <!-- social -->
+                <div class="col-md-4 col-md-push-8">
+                    <ul class="footer-social">
+                        <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#" class="twitter"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                        <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+                        <li><a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+                <!-- /social -->
+
+                <!-- copyright -->
+                <div class="col-md-8 col-md-pull-4">
+                    <div class="footer-copyright">
+                        <span>&copy; Copyright 2023. All Rights Reserved.</a></span>
+                    </div>
+                </div>
+                <!-- /copyright -->
+
+            </div>
+            <!-- row -->
+
+        </div>
+        <!-- /container -->
+
+    </footer>
+    <!-- /Footer -->
+
+
+
+
+    <!-- jQuery Plugins -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/google-map.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+
+</body>
+
+</html>

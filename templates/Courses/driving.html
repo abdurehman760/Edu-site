@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Driving Education Template</title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/video_gellery.css') }}">
+
+  
+</head>
+<body>
+
+
+<header id="header">
+    <div class="container">
+
+        <div class="navbar-header">
+           
+            <div class="navbar-brand">
+                <a class="logo" href="{{ url_for('index') }}">
+                    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+                </a>
+            </div>
+            <!-- /Logo -->
+
+            <!-- Mobile toggle -->
+            <button class="navbar-toggle">
+                <span></span>
+            </button>
+            <!-- /Mobile toggle -->
+        </div>
+
+        <!-- Navigation -->
+			<nav id="nav">
+				<ul class="main-menu nav navbar-nav navbar-right">
+					<li><a href="{{ url_for('index') }}">Home</a></li>
+					<li><a href="{{ url_for('about') }}">About</a></li>
+					<li><a href="{{ url_for('course') }}">Courses</a></li>
+					<li><a href="{{ url_for('blog') }}">Blog</a></li>
+					<li><a href="{{ url_for('contact') }}">Contact</a></li>
+					{% if 'user_id' in session %}
+					{% if session['role'] == 'teacher' %}
+					<li><a href="{{ url_for('teacher_dashboard') }}">Teacher Dashboard</a></li>
+					{% endif %}
+					<li><a href="{{ url_for('logout') }}">Logout ({{ session['username'] }})</a></li>
+					{% else %}
+					<li><a href="{{ url_for('login') }}">Login</a></li>
+					{% endif %}
+					<li><a href="#" id="darkModeToggle" onclick="toggleDarkMode();"> Dark mode</a></li>
+
+				</ul>
+			</nav>
+
+			<script>
+				function toggleDarkMode() {
+					var element = document.body;
+					element.classList.toggle("dark-mode");
+
+					// Get the link element by its id
+					var darkModeToggle = document.getElementById("darkModeToggle");
+
+					// Toggle the link text based on the body class
+					if (element.classList.contains("dark-mode")) {
+						darkModeToggle.textContent = "Light mode";
+					} else {
+						darkModeToggle.textContent = "Dark mode";
+					}
+				}
+
+			</script>
+
+
+    </div>
+</header>
+<!-- /Header -->
+
+<!-- Hero-area -->
+<div class="hero-area section">
+
+    <!-- Backgound Image -->
+	<div class="bg-image bg-parallax overlay" style="background-image: url('static/img//page-background.jpg');"></div>
+    
+    <!-- /Backgound Image -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 text-center">
+                <ul class="hero-area-tree">
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li>Driving</li>
+                </ul>
+                <h1 class="white-text">Driving Course</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Hero-area -->
+
+
+<div class="video_container">
+    <div class="row">
+        <!-- Loop through your video data -->
+        {% for video in videos %}
+        <div class="col-md-4">
+            <a href="{{ url_for('play_video', video_id=video.id) }}">
+                <div class="video-box">
+                    <div class="video-container">
+                        <img src="{{ url_for('static', filename='upload_thumbnail/' ~ video.video_thumbnail) }}" alt="{{ video.title }}">
+                    </div>
+                    <div class="video-details">
+                        <h2>{{ video.title }}</h2>
+                        <p>{{ video.views }} views • {{ video.likes_count }} likes • {{ video.dislikes_count }} dislikes • {{ video.upload_time|timedelta }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% else %} 
+        <h4>No videos available.</h4>
+        {% endfor %}
+    </div>
+</div>
+<!-- Footer -->
+<footer id="footer" class="section">
+   
+            <div class="col-md-6">
+                <ul class="footer-nav">
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                    <li><a href="{{ url_for('course') }}">Courses</a></li>
+                    <li><a href="{{ url_for('blog') }}">Blog</a></li>
+                    <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-md-push-8">
+                <!-- Social links -->
+            </div>
+            <div class="col-md-8 col-md-pull-4">
+                <div class="footer-copyright">
+                    <span>&copy; Copyright 2018. All Rights Reserved.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- /Footer -->
+
+<!-- row -->
+<div id="bottom-footer" class="row">
+
+	<!-- social -->
+	<div class="col-md-4 col-md-push-8">
+		<ul class="footer-social">
+			<li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+			<li><a href="#" class="twitter"><i class="fa fa-twitter"></i></a></li>
+			<li><a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+			<li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+			<li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+			<li><a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+		</ul>
+	</div>
+	<!-- /social -->
+
+	<!-- copyright -->
+	<div class="col-md-8 col-md-pull-4">
+		<div class="footer-copyright">
+			<span>&copy; Copyright 2018. All Rights Reserved.</a></span>
+		</div>
+	</div>
+	<!-- /copyright -->
+
+</div>
+<!-- row -->
+
+</div>
+<!-- /container -->
+
+</footer>
+<!-- /Footer -->
+
+<!-- preloader -->
+<div id='preloader'><div class='preloader'></div></div>
+<!-- /preloader -->
+
+<!-- jQuery Plugins -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/google-map.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

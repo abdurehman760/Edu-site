@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Admin Dashboard</title>
+  
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_user.css') }}">
+   
+    <style>
+        
+       
+
+    </style>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+        </div>
+        <span class="logo-text"></span>
+        <div id="menu-button">
+            <button onclick="toggleNav()">☰</button>
+        </div>
+        
+        
+    </header>
+    <nav id="side-nav">
+        <button id="close-btn" onclick="closeNav()">&times;</button>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('course') }}">Courses</a></li>
+            <li><a href="{{ url_for('blog') }}">Blog</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
+            {% if 'user_id' in session %}
+            {% if session['role'] in ['teacher', 'admin'] %}
+<li><a href="{{ url_for('teacher_dashboard') }}">Teacher Dashboard</a></li>
+{% endif %}
+
+            <li><a href="{{ url_for('logout') }}">Logout ({{ session['username'] }})</a></li>
+            {% else %}
+            
+            {% endif %}
+            
+            
+        </ul>
+    </nav>
+
+    <div class="user-edit-container">
+        <form method="POST" class="user-edit-form">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" value="{{ user.username }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="role">Role:</label>
+                <select id="role" name="role">
+                    <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+                    <option value="user" {% if user.role == 'user' %}selected{% endif %}>User</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="password">New Password:</label>
+                <input type="password" id="password" name="password" placeholder="current pass: * {{ user.password }} *">
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm new password">
+            </div>
+
+            <button type="submit" class="update-button">Update User</button>
+        </form>
+        <a href="{{ url_for('admin_users') }}" class="back-link">Back to User List</a>
+    </div>
+    <script>
+        function closeNav() {
+            document.getElementById("side-nav").style.left = "-200px";
+        }
+    
+        function toggleNav() {
+            var sideNav = document.getElementById("side-nav");
+            var left = sideNav.style.left;
+            if (left == "-200px") {
+                sideNav.style.left = "0px";
+            } else {
+                sideNav.style.left = "-200px";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,328 @@
+/* Add the styles for your course details page here */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.image-container {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #b11414;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+    height: 300px; /* Set a fixed height for the image container */
+    position: relative; /* Ensure position is relative for absolute positioning */
+}
+
+img {
+    max-width: 100%;
+    height: 100%; /* Ensure the image fills the container */
+    object-fit: cover; /* Maintain aspect ratio while covering the container */
+    display: block;
+}
+
+.image-container:hover {
+    transform: scale(1.05);
+}
+
+
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(243, 240, 240, 0.7);
+    color: #f00f0f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-container:hover .image-overlay {
+    opacity: 1;
+}
+.image-overlay p {
+    margin: 0;
+    padding: 10px;
+    font-size: 18px;
+    text-align: center;
+}
+
+/* Style for the Comments Section */
+.comment-section {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    
+    border-radius: 8px;
+}
+
+comments-heading {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+/* Add space between each comment */
+.comment-container {
+    margin-bottom: 20px; /* You can adjust this value to control the spacing */
+}
+
+/* Style the edit comment form */
+.edit-comment-form {
+    margin-top: 10px; /* Space between comment content and edit form */
+    padding: 10px;
+    background-color: #f0f0f0; /* Light gray background */
+    border: 1px solid #ccc; /* Gray border */
+    border-radius: 5px;
+}
+
+/* Add padding to the comment content */
+.comment-content {
+    padding: 10px;
+    background-color: #fff;
+    border: 3px solid #ff7a00;
+    border-radius: 5px;
+    box-shadow: 4px 3px 2px 1px #ff7a009c;
+}
+
+/* Style the reply form (if needed) */
+.reply-form {
+    margin-top: 10px; /* Space between comment content and reply form */
+    padding: 10px;
+    background-color: #f0f0f0; /* Light gray background */
+    border: 1px solid #ccc; /* Gray border */
+    border-radius: 5px;
+}
+
+/* Add space between elements inside comment-info */
+.comment-info a {
+    margin-right: 10px; /* Space between links (Reply, Edit, Delete) */
+}
+
+/* Style delete comment link (if needed) */
+.delete-comment-link {
+    color: red; /* Red color for delete link */
+    text-decoration: none;
+}
+
+/* Style edit comment link (if needed) */
+.edit-comment-link {
+    color: #007bff; /* Blue color for edit link */
+    text-decoration: none;
+}
+
+/* Style edit comment form */
+.edit-comment-form {
+    padding: 10px;
+    background-color: #f0f0f0; /* Light gray background */
+    border: 1px solid #ccc; /* Gray border */
+    border-radius: 5px;
+}
+
+/* Style the delete and edit links on hover */
+.delete-comment-link:hover,
+.edit-comment-link:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* Style for Individual Comment */
+.comment {
+    display: flex;
+    margin-bottom: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.comment-content {
+    flex: 1;
+}
+
+.comment-name {
+    font-size: 14px;
+    margin: 0;
+    font-style: oblique;
+}
+
+.name {
+    font-size: 20px;
+    margin: 0;
+    font-family: emoji;
+}
+
+.comment-message {
+    font-size: 18px;
+    color: #000000c2;
+    font-family: system-ui;
+}
+
+.course-mention {
+    color: #007bff; /* Blue color for course mention */
+}
+
+.comment-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comment-timestamp {
+    font-size: 14px;
+}
+
+.reply-link {
+    text-decoration: none;
+    color: #007bff; /* Blue color for reply link */
+    cursor: pointer;
+}
+
+/* Style for Comment Form */
+.comment-form {
+    margin-top: 25px;
+    margin-bottom: 20px;
+    background-color: #0b39ce1c;
+    border: 3px solid #8535f0;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.comment-form input.input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.comment-form select.input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #5ca8e4;
+}
+
+.comment-form button {
+    background-color: #f36405;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.comment-form button:hover {
+    background-color: #f6f6f6;
+    color: black;
+}
+
+.teacher-tag {
+    background-color: #00ff07;
+    color: #333;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.student-tag {
+    background-color: #cdcdcd;
+    color: #333;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.reply-message {
+    font-family: 'Montserrat';
+    color: black;
+}
+
+.reply-content {
+    margin-left: 20px;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+}
+
+.reply {
+    border: 1px solid #edcbcb;
+    padding: 10px;
+    margin-top: 10px;
+    margin-left: 20px;
+    box-shadow: 1px 1px 3px #646161;
+}
+.video-container {
+    position: relative;
+}
+
+.delete-X {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+}
+.main-buttons {
+    position: relative;
+    display: inline-block;
+    padding: 10px 30px;
+    background-color: #FF6700;
+    border: 2px solid transparent;
+    border-radius: 40px;
+    color: #FFF;
+    -webkit-transition: 0.2s all;
+    transition: 0.2s all;
+}
+/* Style the delete button within the image-overlay */
+.delete-form {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+    padding: 5px 80px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

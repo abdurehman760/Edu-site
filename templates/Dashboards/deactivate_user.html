@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Deactivated User</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/deactivate_user.css') }}">
+    <style>
+        
+        header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  box-shadow: -1px 6px 7px #221d1d;
+  color: white;
+  background: linear-gradient(90deg, #C7C5F4, #776BCC);
+}
+
+#logo {
+  width: 200px;
+  height: 60px;
+}
+
+#logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+#menu-button {
+  width: 60px;
+  height: 60px;
+}
+
+#menu-button button {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#profile {
+  width: 60px;
+  height: 60px;
+}
+
+#profile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+#search {
+  width: 300px;
+  height: 40px;
+  margin-right: 20px;
+}
+
+#search input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 20px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+#side-nav {
+  width: 200px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: -200px;
+  background-color: #444;
+  color: white;
+  transition: 0.3s;
+}
+
+#side-nav ul {
+  list-style: none;
+}
+
+#side-nav ul li {
+  height: 60px;
+  line-height: 60px;
+  padding-left: 20px;
+  border-bottom: 1px solid #555;
+}
+
+#side-nav ul li a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: white;
+  text-decoration: none;
+  text-align: start;
+}
+
+#side-nav ul li:hover {
+  background-color: #555;
+}
+#close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+        </div>
+        <div id="menu-button">
+            <button onclick="toggleNav()">☰</button>
+        </div>
+        
+        
+    </header>
+    <nav id="side-nav">
+        <button id="close-btn" onclick="closeNav()">&times;</button>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('course') }}">Courses</a></li>
+            <li><a href="{{ url_for('blog') }}">Blog</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
+            {% if 'user_id' in session %}
+            {% if session['role'] in ['teacher', 'admin'] %}
+<li><a href="{{ url_for('teacher_dashboard') }}">Teacher Dashboard</a></li>
+{% endif %}
+
+            <li><a href="{{ url_for('logout') }}">Logout ({{ session['username'] }})</a></li>
+            {% else %}
+            
+            {% endif %}
+            
+            
+            
+        </ul>
+    </nav>
+
+    <p>Are you sure you want to 
+    {% if user.status == 'active' %}
+        <form method="POST" action="{{ url_for('deactivate_user', user_id=user.id) }}">
+            <button class="deactivate" type="submit">Deactivate</button>
+        </form>
+    {% else %}
+        <form method="POST" action="{{ url_for('deactivate_user', user_id=user.id) }}">
+            <button class="activate" type="submit">Activate</button>
+        </form>
+    {% endif %}
+    
+    {% if user.status == 'active' %}
+        <p class="activate-info">Account for user <span class="username" >"{{ user.username }}"</span>  has not been deactivated.</p>
+    {% else %}
+        <p class="deactivate-info">Account for user "{{ user.username }}" was deactivated on {{ user.deactivated_at.strftime('%Y-%m-%d %H:%M:%S') }}.</p>
+        
+        {% if user.deactivated_at %}
+            <p class="time-info">Account has been deactivated for {{ (current_time - user.deactivated_at).days }} days, {{ ((current_time - user.deactivated_at).seconds) // 3600 }} hours, and {{ ((current_time - user.deactivated_at).seconds) // 60 % 60 }} minutes.</p>
+        {% endif %}
+    {% endif %}
+    
+    <a href="{{ url_for('admin_users') }}" class="cancel-button">Cancel</a>
+    <script>
+        function closeNav() {
+            document.getElementById("side-nav").style.left = "-200px";
+        }
+    
+        function toggleNav() {
+            var sideNav = document.getElementById("side-nav");
+            var left = sideNav.style.left;
+            if (left == "-200px") {
+                sideNav.style.left = "0px";
+            } else {
+                sideNav.style.left = "-200px";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDU LOGIN</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+    <header>
+        <h1 class="heading">EDU LOGIN</h1>
+    </header>
+
+   
+
+    <div class="container">
+        <div class="slider"></div>
+        <div class="btn">
+            <button class="login">Login</button>
+            <button class="signup">Signup</button>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{% if category == 'success' %}success{% elif category == 'error' %}error{% endif %}">
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+        
+
+        
+    
+
+    
+        <div class="form-section">
+            <!-- Login form -->
+            <form action="{{ url_for('login') }}" method="POST">
+                <input type="hidden" name="action" value="login">
+                <div class="login-box">
+                    <input type="text" class="email ele" name="login_input" placeholder="Email or Username" required>
+                    <input type="password" class="password ele" name="password" placeholder="Password" required>
+                    <button type="submit" class="clkbtn">Login</button>
+                </div>
+            </form>
+            
+
+            <!-- Signup form -->
+            <form action="{{ url_for('register') }}" method="POST">
+                <input type="hidden" name="action" value="register">
+                <div class="signup-box">
+                    <input type="text" name="username" class="name ele" placeholder="Username" required>
+                    <input type="email" name="email" class="email ele" placeholder="Email" required>
+                    <input type="password" name="password" class="password ele" placeholder="Password" required>
+                    <input type="password" name="confirm_password" class="password ele" placeholder="Confirm Password" required>
+                    <button type="submit" class="clkbtn">Signup</button>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</body>
+
+
+
+
+<script>
+    let signup = document.querySelector(".signup");
+    let login = document.querySelector(".login");
+    let slider = document.querySelector(".slider");
+    let formSection = document.querySelector(".form-section");
+
+    signup.addEventListener("click", () => {
+        slider.classList.add("moveslider");
+        formSection.classList.add("form-section-move");
+    });
+
+    login.addEventListener("click", () => {
+        slider.classList.remove("moveslider");
+        formSection.classList.remove("form-section-move");
+    });
+</script>
+<script>
+    // Function to hide flashed messages after 5 seconds
+    function hideFlashedMessages() {
+        var flashes = document.querySelectorAll('.flashes');
+        if (flashes) {
+            flashes.forEach(function (flash) {
+                setTimeout(function () {
+                    flash.style.display = 'none';
+                }, 5000); // 5000 milliseconds = 5 seconds
+            });
+        }
+    }
+
+    // Call the hideFlashedMessages function when the page loads
+    window.onload = hideFlashedMessages;
+</script>
+
+
+</html>

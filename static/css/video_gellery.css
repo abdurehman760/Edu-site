@@ -1,0 +1,64 @@
+/* video-gallery.css */
+
+/* Container styles */
+.video_container {
+    max-width: 960px;
+    margin: 50px auto;
+}
+
+/* Video box styles */
+.video-box {
+    margin-bottom: 20px;
+}
+
+/* Video thumbnail styles */
+.video-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 200px;
+    transition: transform 0.3s ease-in-out; /* Add a smooth transition effect */
+}
+
+/* Hover effect for the video container */
+.video-container:hover {
+    transform: scale(1.05); /* Enlarge the video container on hover */
+}
+
+/* Set a fixed height for each video thumbnail */
+.video-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 8px; /* Add border-radius for a rounded appearance */
+}
+
+/* Title styles */
+h2 {
+    font-size: 1.5rem;
+    margin-top: 10px;
+    color: #333; /* Darken the title color for better readability */
+}
+
+/* Video details styles */
+.video-details {
+    text-align: center; /* Center the video details */
+}
+
+/* Additional styles for better readability */
+p {
+    margin-bottom: 10px;
+}
+
+/* Add a subtle box shadow on hover for the title */
+.video-container:hover h2 {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* No videos message styles */
+h4 {
+    margin-top: 20px;
+    color: #888;
+}

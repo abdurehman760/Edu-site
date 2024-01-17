@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blog Post</title>
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/create_blog.css') }}">
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <div class="navbar-header">
+                <!-- Logo -->
+                <div class="navbar-brand">
+                    <a class="logo" href="{{ url_for('index') }}">
+                        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+                    </a>
+                </div>
+                <!-- /Logo -->
+                <!-- Mobile toggle -->
+                <button class="navbar-toggle">
+                    <span></span>
+                </button>
+                <!-- /Mobile toggle -->
+            </div>
+            <!-- Navigation -->
+			<nav id="nav">
+				<ul class="main-menu nav navbar-nav navbar-right">
+					<li><a href="{{ url_for('index') }}">Home</a></li>
+					<li><a href="{{ url_for('about') }}">About</a></li>
+					<li><a href="{{ url_for('course') }}">Courses</a></li>
+					<li><a href="{{ url_for('blog') }}">Blog</a></li>
+					<li><a href="{{ url_for('contact') }}">Contact</a></li>
+					{% if 'user_id' in session %}
+					{% if session['role'] == 'teacher' %}
+					<li><a href="{{ url_for('teacher_dashboard') }}">Teacher Dashboard</a></li>
+					{% endif %}
+					<li><a href="{{ url_for('logout') }}">Logout ({{ session['username'] }})</a></li>
+					{% else %}
+					<li><a href="{{ url_for('login') }}">Login</a></li>
+					{% endif %}
+					<li><a href="#" id="darkModeToggle" onclick="toggleDarkMode();"> Dark mode</a></li>
+
+				</ul>
+			</nav>
+
+			<script>
+				function toggleDarkMode() {
+					var element = document.body;
+					element.classList.toggle("dark-mode");
+
+					// Get the link element by its id
+					var darkModeToggle = document.getElementById("darkModeToggle");
+
+					// Toggle the link text based on the body class
+					if (element.classList.contains("dark-mode")) {
+						darkModeToggle.textContent = "Light mode";
+					} else {
+						darkModeToggle.textContent = "Dark mode";
+					}
+				}
+
+			</script>
+
+        </div>
+    </header>
+    <!-- /Header -->
+
+    <!-- Hero-area -->
+    <div class="hero-area section">
+        <!-- Background Image -->
+        <div class="bg-image bg-parallax overlay" style="background-image: url('static/img/page-background.jpg');">
+        </div>
+        <!-- /Background Image -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1 text-center">
+                    <ul class="hero-area-tree">
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                        <li>Blog Post</li>
+                    </ul>
+                    <h1 class="white-text">Blog Post</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Hero-area -->
+
+    <form method="POST" enctype="multipart/form-data">
+        <div class="container_title">
+            <h2>Create Blog Post</h2>
+        </div>
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" class="form-control" maxlength="30" required>
+            <small class="form-text text-muted">Choose a descriptive and attention-grabbing title for your blog post.</small>
+        </div>
+        <div class="form-group">
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author" class="form-control" maxlength="15" required>
+            <small class="form-text text-muted">Enter your name or pen name as the author of the blog post.</small>
+        </div>
+        <div class="form-group">
+            <label for="thumbnail">Thumbnail:</label>
+            <input type="file" id="thumbnail" name="thumbnail" accept="image/*" class="form-control"  required>
+            <small class="form-text text-muted">Upload a thumbnail image that represents your blog post.</small>
+        </div>
+        <div class="form-group">
+            <label for="cover_pic">Cover Picture:</label>
+            <input type="file" id="cover_pic" name="cover_pic" accept="image/*" class="form-control" required>
+            <small class="form-text text-muted">Provide a captivating cover picture to enhance the visual appeal.</small>
+        </div>
+        <div class="form-group">
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" class="form-control" rows="5" required></textarea>
+            <div id="courseSuggestions" style="position: absolute; display: none; background-color: #fff; border: 1px solid #ddd;"></div>
+            <small class="form-text text-muted">Mention courses using <kbd>@</kbd>. For example, "@HTML Course".</small>
+        </div>
+        
+        
+        <div class="form-group">
+            <label for="category">Blog Category:</label>
+            <select id="category" name="category" class="form-control">
+                <!-- Predefined categories with names -->
+                <option value="Technology">Technology</option>
+                <option value="Science">Science</option>
+                <option value="Art">Art</option>
+                <option value="Literature">Literature</option>
+                <option value="History">History</option>
+                <option value="Music">Music</option>
+                <option value="Travel">Travel</option>
+                <option value="Food">Food</option>
+                <option value="Sports">Sports</option>
+                <option value="Health">Health</option>
+                <option value="custom">Other</option>
+            </select>
+            <input type="text" id="customCategory" name="customCategory" class="form-control" style="display: none;" maxlength="10" placeholder="Enter custom category">
+            <small class="form-text text-muted">Select a category for your blog post. Choose "Other" if not listed.</small>
+        </div>
+        
+        
+        <div class="form-group">
+            <label for="keywords">Keywords:</label>
+            <input type="text" id="keywords" name="keywords" class="form-control" oninput="validateKeywords()">
+            <small class="form-text text-muted">
+                Enter keywords relevant to your blog post, separated by commas (optional).
+            </small>
+            <p id="keywordsError" style="color: red;"></p>
+            <p id="charCount"></p>
+        </div>
+        <div class="form-group">
+            <label for="is_featured">Featured Post:</label>
+            <input type="checkbox" id="is_featured" name="is_featured" class="form-check-input">
+            <small class="form-text text-muted">Check this box if you want to feature the post.</small>
+        </div>
+        <div class="form-group">
+            <label for="status">Post Status:</label>
+            <select id="status" name="status" class="form-control">
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+                <option value="archived">Archived</option>
+            </select>
+            <small class="form-text text-muted">Choose the status of your blog post.</small>
+        </div>
+        <div class="form-group">
+            <label for="attachments">Attachments:</label>
+            <input type="file" id="attachments" name="attachments[]" accept="application/pdf, image/*" multiple class="form-control">
+            <small class="form-text text-muted">
+                Upload any additional attachments related to your blog post (optional).
+                <br>
+                <strong>Windows:</strong> Hold down the <kbd>Ctrl</kbd> key while selecting multiple files.
+                <br>
+                <strong>Mac:</strong> Hold down the <kbd>Command</kbd> key while selecting multiple files.
+            </small>
+        </div>
+        <div class="create_button">
+        <button type="submit" class="btn btn-primary">Create Post</button>
+       </div>
+       
+
+        <select id="dynamicCategories" style="display: none;">
+            {% for category in categories %}
+    <option value="{{ category }}">{{ category }}</option>
+{% endfor %}
+    </form>
+    
+    
+            
+
+    </div>
+    <!-- /container -->
+
+
+   <!-- Footer -->
+	<footer id="footer" class="section">
+
+		<!-- container -->
+		<div class="container">
+
+			<!-- row -->
+			<div class="row">
+
+				<!-- footer logo -->
+				<div class="col-md-6">
+					<div class="footer-logo">
+						<a class="logo" href="{{ url_for('index') }}">
+							<img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+						</a>
+
+					</div>
+				</div>
+				<!-- footer logo -->
+
+				<!-- footer nav -->
+				<div class="col-md-6">
+					<ul class="footer-nav">
+						<li><a href="{{ url_for('index') }}">Home</a></li>
+						<li><a href="{{ url_for('about') }}">About</a></li>
+						<li><a href="{{ url_for('course') }}">Courses</a></li>
+						<li><a href="{{ url_for('blog') }}">Blog</a></li>
+						<li><a href="{{ url_for('contact') }}">Contact</a></li>
+
+					</ul>
+				</div>
+				<!-- /footer nav -->
+
+			</div>
+			<!-- /row -->
+
+			<!-- row -->
+			<div id="bottom-footer" class="row">
+
+				<!-- social -->
+				<div class="col-md-4 col-md-push-8">
+					<ul class="footer-social">
+						<li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+						<li><a href="#" class="twitter"><i class="fa fa-twitter"></i></a></li>
+						<li><a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+						<li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+						<li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+						<li><a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+					</ul>
+				</div>
+				<!-- /social -->
+
+				<!-- copyright -->
+				<div class="col-md-8 col-md-pull-4">
+					<div class="footer-copyright">
+						<span>&copy; Copyright 2023. All Rights Reserved.</a></span>
+					</div>
+				</div>
+				<!-- /copyright -->
+
+			</div>
+			<!-- row -->
+
+		</div>
+		<!-- /container -->
+
+	</footer>
+	<!-- /Footer -->
+
+	
+	<!-- jQuery Plugins -->
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/google-map.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        // Add an event listener to the categories dropdown
+        document.getElementById('category').addEventListener('change', function () {
+            // Get the selected option
+            var selectedOption = this.options[this.selectedIndex];
+
+            // Check if the selected option is "Other"
+            if (selectedOption.value === 'custom') {
+                // Show the custom category input field
+                document.getElementById('customCategory').style.display = 'block';
+            } else {
+                // Hide the custom category input field
+                document.getElementById('customCategory').style.display = 'none';
+            }
+        });
+    </script>
+
+
+
+
+<script>
+    function validateKeywords() {
+        var keywordsInput = document.getElementById('keywords');
+        var keywordsError = document.getElementById('keywordsError');
+        var charCount = document.getElementById('charCount');
+        var keywords = keywordsInput.value;
+
+        // Set the maximum limit for each keyword (e.g., 10 characters)
+        var maxKeywordLength = 10;
+        var isValid = true;
+        var totalCharacters = 1;
+
+        // Regular expression to allow only A to Z, numbers, and commas
+        var allowedCharsRegex = /^[a-zA-Z0-9,]+$/;
+
+        // Check if the input contains any disallowed characters
+        if (!allowedCharsRegex.test(keywords)) {
+            isValid = false;
+        }
+
+        for (var i = 0; i < keywords.length; i++) {
+            if (keywords[i] === ',') {
+                // Reset the counter to zero when a comma is encountered
+                totalCharacters = 0;
+            } else {
+                totalCharacters += 1; // Count each character (excluding commas)
+            }
+
+            if (keywords[i] === ',' && i === keywords.length - 1) {
+                // Exclude the trailing comma from the character count
+                totalCharacters -= 1;
+            }
+
+            // Check if the character count exceeds the limit
+            if (totalCharacters > maxKeywordLength) {
+                isValid = false;
+                break;
+            }
+        }
+
+        if (isValid) {
+            keywordsError.textContent = ''; // Clear error message
+        } else {
+            keywordsError.textContent = 'Each keyword must be ' + maxKeywordLength + ' characters or less, and only A-Z, 0-9, and commas are allowed.';
+        }
+
+        // Display character count
+        charCount.textContent = 'Character Count: ' + totalCharacters;
+    }
+</script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    // Function to handle mentioning courses
+    function handleMentioning() {
+        // Fetch the dynamic categories
+        var dynamicCategories = $('#dynamicCategories option').map(function () {
+            return $(this).val();
+        }).get();
+
+        // Get the content textarea
+        var contentTextarea = $('#content');
+        // Get the course suggestions container
+        var courseSuggestionsContainer = $('#courseSuggestions');
+
+        // Add an input event listener to the content textarea
+        contentTextarea.on('input', function () {
+            // Get the current cursor position
+            var cursorPosition = contentTextarea.prop("selectionStart");
+
+            // Get the content of the textarea
+            var content = contentTextarea.val();
+
+            // Find the word starting from the cursor position
+            var match = /\B@(\w*)$/.exec(content.substr(0, cursorPosition));
+
+            if (match) {
+                // Extract the mentioned course prefix
+                var mentionedCourse = match[1];
+
+                // Simulate fetching course suggestions (replace this with your actual data)
+                var predefinedSuggestions = [
+                    "HTML Course",
+                    "CSS",
+                    "Bootstrap",
+                    "JavaScript",
+                    "Photography",
+                    "Driving",
+                    "Writing",
+                    "Speaking"
+                ];
+
+                // Combine predefined and dynamic categories
+                var allCategories = predefinedSuggestions.concat(dynamicCategories);
+
+                // Filter course suggestions based on the mentioned course prefix
+                var filteredSuggestions = allCategories.filter(function (course) {
+                    return course.toLowerCase().startsWith(mentionedCourse.toLowerCase());
+                });
+
+                // Display the course suggestions
+                displayCourseSuggestions(filteredSuggestions, cursorPosition);
+            } else {
+                // Hide the suggestions if no mention is found
+                courseSuggestionsContainer.hide();
+            }
+        });
+
+        // Handle click on a suggestion
+        courseSuggestionsContainer.on('click', 'div', function () {
+            // Replace the mention with the selected course
+            var selectedCourse = $(this).text();
+            var content = contentTextarea.val();
+            var cursorPosition = contentTextarea.prop("selectionStart");
+            var newText = content.substring(0, cursorPosition - mentionedCourse.length) + selectedCourse + content.substring(cursorPosition);
+            contentTextarea.val(newText);
+
+            // Hide the suggestions
+            courseSuggestionsContainer.hide();
+        });
+    }
+
+    // Function to display course suggestions
+    function displayCourseSuggestions(suggestions, cursorPosition) {
+        // Get the course suggestions container
+        var courseSuggestionsContainer = $('#courseSuggestions');
+
+        // Clear previous suggestions
+        courseSuggestionsContainer.empty();
+
+        // Add new suggestions
+        suggestions.forEach(function (suggestion) {
+            // Create a clickable suggestion element
+            var suggestionDiv = $('<div>').addClass('course-suggestion').text(suggestion);
+            suggestionDiv.attr('onclick', 'selectCourse("' + suggestion + '")');
+            courseSuggestionsContainer.append(suggestionDiv);
+        });
+
+        // Position and show the suggestions container
+        var textareaOffset = $('#content').offset();
+        courseSuggestionsContainer.css({
+            'top': textareaOffset.top + 30,
+            'left': textareaOffset.left,
+            'width': '200px', // Adjust the width as needed
+        }).show();
+    }
+
+    // Function to handle the selection of a course
+    function selectCourse(course) {
+        // Get the content textarea
+        var contentTextarea = $('#content');
+        // Get the current cursor position
+        var cursorPosition = contentTextarea.prop("selectionStart");
+        // Get the content of the textarea
+        var content = contentTextarea.val();
+        // Replace the mention with the selected course
+        var newText = content.substring(0, cursorPosition) + course + content.substring(cursorPosition);
+        contentTextarea.val(newText);
+        // Hide the suggestions
+        $('#courseSuggestions').hide();
+    }
+
+    // Call the function when the document is ready
+    $(document).ready(function () {
+        handleMentioning();
+    });
+</script>
+
+<style>
+    .course-suggestion {
+        cursor: pointer;
+        padding: 5px;
+        border-bottom: 1px solid #000000;
+    }
+
+    .course-suggestion:hover {
+        background-color: #d4baba;
+    }
+</style>
+
+</body>
+
+</html>

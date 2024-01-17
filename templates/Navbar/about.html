@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+	<title>HTML Education Template</title>
+
+	<!-- Google font -->
+	<link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
+
+	<!-- Bootstrap -->
+	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+	<!-- Font Awesome Icon -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/all.min.css') }}">
+
+	<!-- Custom stlylesheet -->
+	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Play&display=swap');
+	</style>
+
+
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		
+
+</head>
+
+<body>
+
+	<!-- Header -->
+	<header id="header">
+		<div class="container">
+
+			<div class="navbar-header">
+				<!-- Logo -->
+				<div class="navbar-brand">
+					<a class="logo" href="{{ url_for('index') }}">
+						<img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+					</a>
+
+				</div>
+				<!-- /Logo -->
+
+				<!-- Mobile toggle -->
+				<button class="navbar-toggle">
+					<span></span>
+				</button>
+				<!-- /Mobile toggle -->
+			</div>
+
+
+			<!-- Navigation -->
+			<nav id="nav">
+				<ul class="main-menu nav navbar-nav navbar-right">
+					<li><a href="{{ url_for('index') }}">Home</a></li>
+					<li><a href="{{ url_for('about') }}">About</a></li>
+					<li><a href="{{ url_for('course') }}">Courses</a></li>
+					<li><a href="{{ url_for('blog') }}">Blog</a></li>
+					<li><a href="{{ url_for('contact') }}">Contact</a></li>
+					{% if 'user_id' in session %}
+					{% if session['role'] in ['teacher', 'admin'] %}
+    <li><a href="{{ url_for('teacher_dashboard') }}">Teacher Dashboard</a></li>
+{% endif %}
+
+					<li><a href="{{ url_for('logout') }}">Logout ({{ session['username'] }})</a></li>
+					{% else %}
+					<li><a href="{{ url_for('login') }}">Login</a></li>
+					{% endif %}
+					<li><a href="#" id="darkModeToggle" onclick="toggleDarkMode();"> Dark mode</a></li>
+
+				</ul>
+			</nav>
+
+			<script>
+				function toggleDarkMode() {
+					var element = document.body;
+					element.classList.toggle("dark-mode");
+
+					// Get the link element by its id
+					var darkModeToggle = document.getElementById("darkModeToggle");
+
+					// Toggle the link text based on the body class
+					if (element.classList.contains("dark-mode")) {
+						darkModeToggle.textContent = "Light mode";
+					} else {
+						darkModeToggle.textContent = "Dark mode";
+					}
+				}
+
+			</script>
+
+
+			<!-- /Navigation -->
+
+		</div>
+	</header>
+	<!-- /Header -->
+
+	<!-- Hero-area -->
+	<div class="hero-area section">
+
+		<!-- Backgound Image -->
+
+		<div class="bg-image bg-parallax overlay" style="background-image: url('static/img//page-background.jpg');">
+		</div>
+		<!-- /Backgound Image -->
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-10 col-md-offset-1 text-center">
+					<ul class="hero-area-tree">
+						<li><a href="{{ url_for('index') }}">Home</a></li>
+						<li>About Us</li>
+					</ul>
+					<h1 class="white-text">About Edusite</h1>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- /Hero-area -->
+
+	<h4>Welcome to Edusite Your Pathway to Knowledge and Success!</h4>
+
+	<p>
+		At Edusite, we believe that education is the cornerstone of personal and societal growth.
+		Our mission is to empower learners of all ages and backgrounds with the tools,
+		resources, and support they need to excel in their educational journeys.
+		Whether you're a student, educator, or lifelong learner,
+		Edusite is your trusted companion on the path to achieving academic and professional success.
+	</p>
+	<hr>
+
+
+	<h4>Our Mission</h4>
+	<p>
+		Our mission is to make education accessible, engaging, and effective for everyone.
+		We believe that learning is a lifelong endeavor, and our goal is to facilitate the acquisition of new skills,
+		the exploration of diverse subjects, and the development of critical thinking and problem-solving abilities.
+		Through EduSite, we aim to foster a community of curious minds eager to explore the world and reach their
+		fullest potential.
+	</p>
+	<hr>
+
+	<h3>What We Offer</h3>
+
+	<h4> 1:: Comprehensive Courses</h4>
+	<p>
+		Our platform offers a wide array of courses spanning various disciplines,
+		from mathematics and science to humanities and creative arts.
+		Whether you're a student looking to supplement your school curriculum or an adult seeking personal enrichment,
+		our courses are tailored to meet your needs.
+	</p>
+
+	<h4>2:: Expert Instructors</h4>
+	<p>
+		We collaborate with educators, subject matter experts,
+		and industry professionals who are passionate about sharing their knowledge and insights.
+		This ensures that you receive accurate and up-to-date information from credible sources.
+	</p>
+
+	<h4>3:: Interactive Learning</h4>
+	<p>
+		Learning should be engaging and interactive. That's why we incorporate a variety of multimedia elements,
+		quizzes, assignments, and collaborative projects into our courses. These features enhance your understanding,
+		retention, and real-world application of the concepts you learn.
+	</p>
+
+	<h4>4:: Flexibility and Convenience</h4>
+	<p>
+		Life is busy, and we understand that. Our platform is designed to be flexible,
+		allowing you to learn at your own pace and on your own schedule.
+		Whether you prefer to study during the day or burn the midnight oil, EduSite is here for you.
+	</p>
+
+	<h4>5:: Community Engagement</h4>
+	<p>
+		Learning is more enriching when shared. Connect with fellow learners through discussion forums,
+		study groups, and networking events. Exchange ideas, ask questions,
+		and collaborate on projects to enhance your learning experience.
+	</p>
+
+	<h4>6:: Personalized Learning</h4>
+	<p>
+		We recognize that every learner is unique. Our platform employs advanced technologies to understand
+		your preferences and learning patterns. This enables us to recommend courses, resources,
+		and learning paths that align with your goals
+	</p>
+	<hr>
+
+	<h3>Join Us in Shaping the Future</h3>
+	<p>
+		EduSite is more than just an educational platform; it's a movement to redefine learning in the digital age.
+		We invite you to join us in this exciting journey of discovery, growth, and transformation.
+		Let's collectively shape a future where education knows no boundaries and where the pursuit of knowledge is
+		truly limitless.
+
+		Thank you for choosing EduSite as your learning companion. Together, let's unlock the doors to a world of
+		endless possibilities.
+
+	<p>Sincerely,</p>
+
+	<p><b>The EduSite Team</b></p>
+	</p>
+	<hr>
+
+	<h3 class=" founder-text">OUR FOUNDER</h3>
+	<img class="founder-image" src="{{ url_for('static', filename='img/course08.jpg') }}">
+
+	<div class="founder-text">
+		<h2>MUHAMMAD ISMAIL SAIB</h2>
+
+	</div>
+	</span>
+	<!-- Footer -->
+	<footer id="footer" class="section">
+
+		<!-- container -->
+		<div class="container">
+
+			<!-- row -->
+			<div class="row">
+
+				<!-- footer logo -->
+				<div class="col-md-6">
+					<div class="footer-logo">
+						<a class="logo" href="{{ url_for('index') }}">
+							<img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+						</a>
+
+					</div>
+				</div>
+				<!-- footer logo -->
+
+				<!-- footer nav -->
+				<div class="col-md-6">
+					<ul class="footer-nav">
+						<li><a href="{{ url_for('index') }}">Home</a></li>
+						<li><a href="{{ url_for('about') }}">About</a></li>
+						<li><a href="{{ url_for('course') }}">Courses</a></li>
+						<li><a href="{{ url_for('blog') }}">Blog</a></li>
+						<li><a href="{{ url_for('contact') }}">Contact</a></li>
+
+					</ul>
+				</div>
+				<!-- /footer nav -->
+
+			</div>
+			<!-- /row -->
+
+			<!-- row -->
+			<div id="bottom-footer" class="row">
+
+				<!-- social -->
+				<div class="col-md-4 col-md-push-8">
+					<ul class="footer-social">
+						<li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+						<li><a href="#" class="twitter"><i class="fa fa-twitter"></i></a></li>
+						<li><a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+						<li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+						<li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+						<li><a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+					</ul>
+				</div>
+				<!-- /social -->
+
+				<!-- copyright -->
+				<div class="col-md-8 col-md-pull-4">
+					<div class="footer-copyright">
+						<span>&copy; Copyright 2023. All Rights Reserved.</a></span>
+					</div>
+				</div>
+				<!-- /copyright -->
+
+			</div>
+			<!-- row -->
+
+		</div>
+		<!-- /container -->
+
+	</footer>
+	<!-- /Footer -->
+
+	<!-- preloader -->
+	<div id='preloader'>
+		<div class='preloader'></div>
+	</div>
+	<!-- /preloader -->
+
+
+	<!-- jQuery Plugins -->
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/google-map.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+
+</html>

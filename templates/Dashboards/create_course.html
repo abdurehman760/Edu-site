@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create New Course</title>
+
+    <!-- Add the following CSS links for styling -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="header" class="transparent-nav">
+        <div class="container">
+
+            <div class="navbar-header">
+                <!-- Logo -->
+                <div class="navbar-brand">
+                    <a class="logo" href="{{ url_for('index') }}">
+
+                        <img src="{{ url_for('static', filename='img/logo-alt.png') }}" alt="logo">
+                    </a>
+                </div>
+                <!-- /Logo -->
+
+                <!-- Mobile toggle -->
+                <button class="navbar-toggle">
+                    <span></span>
+                </button>
+                <!-- /Mobile toggle -->
+            </div>
+
+            <!-- Navigation -->
+			<nav id="nav">
+				<ul class="main-menu nav navbar-nav navbar-right">
+					<li><a href="{{ url_for('index') }}">Home</a></li>
+					<li><a href="{{ url_for('about') }}">About</a></li>
+					<li><a href="{{ url_for('course') }}">Courses</a></li>
+					<li><a href="{{ url_for('blog') }}">Blog</a></li>
+					<li><a href="{{ url_for('contact') }}">Contact</a></li>
+					{% if 'user_id' in session %}
+					{% if session['role'] == 'teacher' %}
+					<li><a href="{{ url_for('teacher_dashboard') }}">Teacher Dashboard</a></li>
+					{% endif %}
+					<li><a href="{{ url_for('logout') }}">Logout ({{ session['username'] }})</a></li>
+					{% else %}
+					<li><a href="{{ url_for('login') }}">Login</a></li>
+					{% endif %}
+					<li><a href="#" id="darkModeToggle" onclick="toggleDarkMode();"> Dark mode</a></li>
+
+				</ul>
+			</nav>
+
+			<script>
+				function toggleDarkMode() {
+					var element = document.body;
+					element.classList.toggle("dark-mode");
+
+					// Get the link element by its id
+					var darkModeToggle = document.getElementById("darkModeToggle");
+
+					// Toggle the link text based on the body class
+					if (element.classList.contains("dark-mode")) {
+						darkModeToggle.textContent = "Light mode";
+					} else {
+						darkModeToggle.textContent = "Dark mode";
+					}
+				}
+
+			</script>
+
+
+        </div>
+    </header>
+    <!-- /Header -->
+
+    <!-- Home -->
+    <div id="home" class="hero-area">
+
+        <!-- Backgound Image -->
+        <div class="bg-image bg-parallax overlay" style="background-image: url('static/img//home-background.jpg');">
+        </div>
+
+        <!-- /Backgound Image -->
+
+        <div class="home-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h1 class="white-text">Explore Exciting New Course Categories</h1>
+                        <p class="lead white-text">Discover and contribute to innovative learning experiences by suggesting a new category for courses that currently isn't available. Your input helps us expand our offerings and tailor content to your interests.</p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container">
+        <!-- Display flash messages if any -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+<div class="course-section">
+        <!-- Course creation form -->
+        <form method="POST" action="{{ url_for('create_course') }}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="course_name">Course Name:</label>
+                <input type="text" id="course_name" name="course_name" required>
+            </div>
+            <div class="form-group">
+                <label for="category">Course Category:</label>
+                <input type="text" id="category" name="category">
+            </div>
+            <div class="form-group">
+                <label for="thumbnail">Course Thumbnail Image:</label>
+                <input type="file" id="thumbnail" name="thumbnail" accept="image/*" required>
+            </div>
+            <button type="submit">Create Course</button>
+        </form>
+
+        <a href="{{ url_for('course') }}">Back to Course Page</a>
+    </div>
+</div>
+
+    <!-- Footer Section -->
+    <footer id="footer" class="section">
+
+        <!-- container -->
+        <div class="container">
+
+            <!-- row -->
+            <div class="row">
+
+                <!-- footer logo -->
+                <div class="col-md-6">
+                    <div class="footer-logo">
+                        <a class="logo" href="{{ url_for('index') }}">
+                            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+                        </a>
+                    </div>
+                </div>
+
+                <!-- footer logo -->
+
+                <!-- footer nav -->
+                <div class="col-md-6">
+                    <ul class="footer-nav">
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                        <li><a href="{{ url_for('about') }}">About</a></li>
+                        <li><a href="{{ url_for('course') }}">Courses</a></li>
+                        <li><a href="{{ url_for('blog') }}">Blog</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                    </ul>
+                </div>
+                <!-- /footer nav -->
+
+            </div>
+            <!-- /row -->
+
+            <!-- row -->
+            <div id="bottom-footer" class="row">
+
+                <!-- social -->
+                <div class="col-md-4 col-md-push-8">
+                    <ul class="footer-social">
+                        <li><a href="#" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#" class="twitter"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href="#" class="instagram"><i class="fa fa-instagram"></i></a></li>
+                        <li><a href="#" class="youtube"><i class="fa fa-youtube"></i></a></li>
+                        <li><a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+                <!-- /social -->
+
+                <!-- copyright -->
+                <div class="col-md-8 col-md-pull-4">
+                    <div class="footer-copyright">
+                        <span>&copy; Copyright 2018. All Rights Reserved.</a></span>
+                    </div>
+                </div>
+                <!-- /copyright -->
+
+            </div>
+            <!-- row -->
+
+        </div>
+        <!-- /container -->
+
+    </footer>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

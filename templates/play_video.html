@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ video.title }} - Video Playback</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/play_video.css') }}">
+</head>
+<body>
+    <div class="video-container">
+        <div class="video">
+            <video controls width="100%">
+                <source src="{{ url_for('static', filename='upload_video/' ~ video.file_path) }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="video-details">
+            <h1 class="video-title">{{ video.title }}</h1>
+            <div class="video-info-line">
+                <p class="video-views">{{ video.views }} views &mdash; {{ video.upload_time|timedelta }}</p>
+                <button class="read-more-button" onclick="toggleVideoInfo()">...more</button>
+            </div>
+            <div class="like-dislike-buttons">
+                <button id="like-button" onclick="toggleLikeButton(this)" data-video-id="{{ video.id }}">
+                    <img src="{{ url_for('static', filename='img/like.png') }}" alt="Like">({{ video.likes_count }})
+                </button>
+                <button id="dislike-button" onclick="toggleDislikeButton(this)" data-video-id="{{ video.id }}">
+                    <img src="{{ url_for('static', filename='img/dislike.png') }}" alt="Dislike">({{ video.dislikes_count }})
+                </button>
+            </div>
+        </div>
+
+        <script>
+            function toggleLikeButton(button) {
+                const videoId = button.getAttribute('data-video-id');
+
+                if (button.querySelector('img').alt === "Like") {
+                    // User wants to Like the video
+                    likeVideo(videoId, button);
+                }
+            }
+
+            function likeVideo(videoId, button) {
+                // Send an AJAX request to your server to record the like
+                const likeUrl = `/like_video/${videoId}`;
+
+                fetch(likeUrl, {
+                    method: 'POST',
+                    credentials: 'same-origin', // Include cookies in the request
+                })
+                .then(response => {
+                    if (response.status === 200) {
+                        // Update the UI to show that the user has liked the video
+                        const likeImage = button.querySelector('img');
+                        likeImage.src = "{{ url_for('static', filename='img/unlike.png') }}";
+                        likeImage.alt = "Unlike";
+                    } else if (response.status === 400) {
+                        alert("You've already liked this video.");
+                    } else if (response.status === 403) {
+                        alert("You must be logged in to like videos.");
+                    } else {
+                        alert("An error occurred while liking the video.");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error while liking the video:', error);
+                });
+            }
+
+            function toggleDislikeButton(button) {
+                const videoId = button.getAttribute('data-video-id');
+
+                if (button.querySelector('img').alt === "Dislike") {
+                    // User wants to Dislike the video
+                    dislikeVideo(videoId, button);
+                }
+            }
+
+            function dislikeVideo(videoId, button) {
+                // Send an AJAX request to your server to record the dislike
+                const dislikeUrl = `/dislike_video/${videoId}`;
+
+                fetch(dislikeUrl, {
+                    method: 'POST',
+                    credentials: 'same-origin', // Include cookies in the request
+                })
+                .then(response => {
+                    if (response.status === 200) {
+                        // Update the UI to show that the user has disliked the video
+                        const dislikeImage = button.querySelector('img');
+                        dislikeImage.src = "{{ url_for('static', filename='img/undislike.png') }}";
+                        dislikeImage.alt = "Undo Dislike";
+                    } else if (response.status === 400) {
+                        alert("You've already disliked this video.");
+                    } else if (response.status === 403) {
+                        alert("You must be logged in to dislike videos.");
+                    } else {
+                        alert("An error occurred while disliking the video.");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error while disliking the video:', error);
+                });
+            }
+        </script>
+
+        <div class="video-info hidden">
+            <button class="X-button" onclick="toggleVideoInfo()">X</button>
+            <div class="items">
+                <span class="title">{{ video.title }}</span>
+                <div class="info-items">
+                    <div class="info-item">
+                        <span>{{ video.views }}</span>
+                        <span><strong>Views</strong></span>
+                    </div>
+                    <div class="info-item">
+                        <span>{{ video.likes_count }}</span>
+                        <span><strong>Likes</strong></span>
+                    </div>
+                    <div class="info-item">
+                        <span>{{ video.upload_time.strftime('%d %b ') }}</span>
+                        <span>{{ video.upload_time.strftime(' %Y') }}</span>
+                    </div>
+                </div>
+                <span class="video-description"><strong>Description:</strong> {{ video.description }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="suggested-videos">
+        <h2>Suggested Videos</h2>
+        <div class="row">
+            {% for suggested_video in suggested_videos %}
+                <div class="col-md-4">
+                    <div class="video-container">
+                        <a href="{{ url_for('play_video', video_id=suggested_video.id) }}">
+                            <img src="{{ url_for('static', filename='upload_thumbnail/' ~ suggested_video.video_thumbnail) }}" alt="Video Thumbnail">
+                        </a>
+                        <h2 class="video-title">{{ suggested_video.title }}</h2>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        function toggleVideoInfo() {
+            var videoInfo = document.querySelector('.video-info');
+            var readMoreButton = document.querySelector('.read-more-button');
+
+            if (videoInfo.style.display === 'none' || videoInfo.style.display === '') {
+                videoInfo.style.display = 'block';
+
+                readMoreButton.innerHTML = '...less';
+            } else {
+                videoInfo.style.display = 'none';
+                readMoreButton.innerHTML = '...more';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+/* Light mode colors */
+:root {
+    --background-color: #f7f2f2;
+    --text-color: #000000;
+    --border-color: #ffffff;
+    --shadow-color: rgba(20, 19, 19, 0.692);
+}
+
+/* Dark mode colors */
+.dark-mode {
+    --background-color: #201f1f;
+    --text-color: #ffffff;
+    --border-color: #444444;
+    --shadow-color: rgb(137, 133, 133);
+}
+
+/* Apply variables to elements */
+.message-item {
+    border: none;
+    padding: 2px;
+    border-radius: 20px;
+    margin: 9px 2px;
+    background-color: var(--background-color);
+    box-shadow: 3px 3px 2px var(--shadow-color);
+}
+
+.message-link {
+    text-decoration: none;
+    color: var(--text-color);
+    display: block;
+    padding: 10px;
+}
+
+.message-details {
+    padding: 0 10px;
+}
+
+.message-sender {
+    font-family: monospace;
+    color: var(--text-color);
+}
+
+.message-subject {
+    color: var(--text-color);
+}
+
+.message-summary {
+    color: var(--text-color);
+}
+/* Unique class for message viewing page */
+.message-view {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 500px;
+    margin: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.message-detail {
+    background-color: #fff;
+    padding: 69px;
+    border: 1px solid #e0e0e0;
+    height: 200px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style specific elements as needed */
+.message-detail strong {
+    color: #333;
+    font-weight: bold;
+}
+
+.message-detail span {
+    color: #0068ff;
+}
+.like_dislike-icon {
+    width: 40px; /* Adjust the width as needed to make it smaller */
+    height: auto; /* Maintain the aspect ratio */
+    display: block;
+    border: none;
+}

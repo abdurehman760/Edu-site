@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>View Message</title>
+
+    <!-- Include your external CSS file for this page -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/message.css') }}">
+</head>
+
+<body>
+
+    <div class="container message-view">
+        <h1>Message Details</h1>
+        <div class="message-detail">
+            <strong>From:</strong> {{ message.name }} <span style="color: #0068ff;">[User: {{ message.user.username }}]</span><br>
+            <strong>Email:</strong> {{ message.user_email }}<br>
+            <strong>Subject:</strong> {{ message.subject }}<br>
+            <strong>Message:</strong> {{ message.message }}<br>
+        </div>
+    </div>
+
+</body>
+
+</html>

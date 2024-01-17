@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #bb1e1e;
+    border-radius: 5px;
+    background-color: #9b5454;
+}
+
+label {
+    display: block;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+input[type="text"],
+textarea,
+input[type="file"],
+input[type="submit"] {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input[type="submit"] {
+    background-color: #8a618a;
+    color: #f0e5e5;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+    form {
+        width: 90%;
+        padding: 15px;
+    }
+}

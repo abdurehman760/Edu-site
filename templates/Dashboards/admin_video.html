@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Video Upload Page</title>
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/dash.css') }}">
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <div class="navbar-header">
+                <!-- Logo -->
+                <div class="navbar-brand">
+                    <a class="logo" href="{{ url_for('index') }}">
+                        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+                    </a>
+                </div>
+                <!-- /Logo -->
+                <!-- Mobile toggle -->
+                <button class="navbar-toggle">
+                    <span></span>
+                </button>
+                <!-- /Mobile toggle -->
+            </div>
+            <!-- Navigation -->
+			<nav id="nav">
+				<ul class="main-menu nav navbar-nav navbar-right">
+					<li><a href="{{ url_for('index') }}">Home</a></li>
+					<li><a href="{{ url_for('about') }}">About</a></li>
+					<li><a href="{{ url_for('course') }}">Courses</a></li>
+					<li><a href="{{ url_for('blog') }}">Blog</a></li>
+					<li><a href="{{ url_for('contact') }}">Contact</a></li>
+					{% if 'user_id' in session %}
+					{% if session['role'] == 'teacher' %}
+					<li><a href="{{ url_for('teacher_dashboard') }}">Teacher Dashboard</a></li>
+					{% endif %}
+					<li><a href="{{ url_for('logout') }}">Logout ({{ session['username'] }})</a></li>
+					{% else %}
+					<li><a href="{{ url_for('login') }}">Login</a></li>
+					{% endif %}
+					<li><a href="#" id="darkModeToggle" onclick="toggleDarkMode();"> Dark mode</a></li>
+
+				</ul>
+			</nav>
+
+			<script>
+				function toggleDarkMode() {
+					var element = document.body;
+					element.classList.toggle("dark-mode");
+
+					// Get the link element by its id
+					var darkModeToggle = document.getElementById("darkModeToggle");
+
+					// Toggle the link text based on the body class
+					if (element.classList.contains("dark-mode")) {
+						darkModeToggle.textContent = "Light mode";
+					} else {
+						darkModeToggle.textContent = "Dark mode";
+					}
+				}
+
+			</script>
+
+        </div>
+    </header>
+    <!-- /Header -->
+
+    <!-- Hero-area -->
+    <div class="hero-area section">
+        <!-- Background Image -->
+        <div class="bg-image bg-parallax overlay" style="background-image: url('static/img/page-background.jpg');">
+        </div>
+        <!-- /Background Image -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1 text-center">
+                    <ul class="hero-area-tree">
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                        <li>Upload Video</li>
+                    </ul>
+                    <h1 class="white-text">Upload Your Video</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Hero-area -->
+
+    <!-- Video Upload Form -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form id="video-upload-form" action="{{ url_for('upload_video') }}" method="POST" enctype="multipart/form-data">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required><br>
+
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="4" required></textarea><br>
+
+                <label for="category">Category:</label>
+<select id="category" name="category" required>
+    {% if user.role == 'admin' %}
+        <!-- Admin can upload to any category -->
+        <option value="htmlcourse">HTML Course</option>
+        <option value="css">CSS</option>
+        <option value="bootstrap">Bootstrap</option>
+        <option value="javascript">JavaScript</option>
+        <option value="photography">Photography</option>
+        <option value="driving">Driving</option>
+        <option value="writing">Writing</option>
+        <option value="speaking">Speaking</option>
+    {% else %}
+        <!-- Non-admin users can only upload to specific categories -->
+        {% for category in categories %}
+            {% if user.id == category[1] %}
+                <!-- User is the creator of this category -->
+                <option value="{{ category[0] }}">{{ category[0] }}</option>
+            {% else %}
+                {% if category[0] in ['htmlcourse', 'css', 'bootstrap', 'javascript', 'photography', 'driving', 'writing', 'speaking'] %}
+                    <option value="{{ category[0] }}">{{ category[0] }}</option>
+                {% else %}
+                    <option value="{{ category[0] }}" disabled>{{ category[0] }} (No access to this category)</option>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    
+    <option value="create_new">Create New Category</option>
+</select><br>
+
+                
+
+                <!-- Input for Video Thumbnail -->
+                <label for="thumbnail" class="choose-file-label">Choose Video Thumbnail:</label>
+                <input class="choose-file" type="file" name="thumbnail" accept="image/*" required><br>
+
+                <label for="video" class="choose-file-label">Choose Video:</label>
+                <input class="choose-file" type="file" name="video" accept="video/*" required>
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("category").addEventListener("change", function () {
+        var selectedCategory = this.value;
+        var fileInput = document.querySelector(".choose-file");
+        var thumbnailInput = document.querySelector(".choose-file[name='thumbnail']");
+        if (selectedCategory === "create_new") {
+            fileInput.disabled = true;
+            thumbnailInput.disabled = true;
+            window.location.href = "{{ url_for('create_course') }}";
+        } else {
+            fileInput.disabled = false;
+            thumbnailInput.disabled = false;
+        }
+    });
+</script>
+<!-- /Video Upload Form -->
+
+
+    <!-- Footer -->
+    <footer id="footer" class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="footer-logo">
+                        <a class="logo" href="{{ url_for('index') }}">
+                            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <ul class="footer-nav">
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                        <li><a href="{{ url_for('about') }}">About</a></li>
+                        <li><a href="{{ url_for('course') }}">Courses</a></li>
+                        <li><a href="{{ url_for('blog') }}">Blog</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- /Footer -->
+
+    <!-- jQuery -->
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <!-- Bootstrap -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+
+    <script>
+        document.getElementById("category").addEventListener("change", function () {
+            var selectedCategory = this.value;
+            if (selectedCategory === "create_new") {
+                window.location.href = "{{ url_for('create_course') }}";
+            }
+        });
+    </script>
+</body>
+
+</html>
