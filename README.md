@@ -36,4 +36,25 @@ git clone https://github.com/abdurehman760/Edu-site/
 cd Edu-site
 ```
 
-###
+### Install Dependencies
+```
+Create a virtual environment and install the required packages:
+
+python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+pip install -r requirements.txt
+```
+### Set Up the Database
+Initialize the database:
+```
+flask db upgrade
+```
+### Run the Application
+Start the development server:
+```
+flask run
+```
+The application will be accessible at http://127.0.0.1:5000/.
+
+This ensures that the headings and code blocks are formatted correctly for easy readability and copying.
+
