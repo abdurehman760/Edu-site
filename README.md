@@ -37,9 +37,8 @@ cd Edu-site
 ```
 
 ### Install Dependencies
-```
 Create a virtual environment and install the required packages:
-
+```
 python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 pip install -r requirements.txt
